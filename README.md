@@ -5,6 +5,7 @@
 
 # Content
 - [TUGAS 7](#tugas-7)
+- [TUGAS 8](#tugas-8)
 #
 
 # Tugas 7
@@ -182,6 +183,217 @@ Dan kita tambahkan color sesuka kita didalam parameter ItemHomePage didalam clas
     ItemHomepage("Logout", Icons.logout, Colors.black38),
   ];
 ```
+
+# Tugas 8
+[Back to Contents](#contents)
+
+## Kegunaan dan keuntungan `const` di dalam flutter dan kapan waktu yang pas saat menggunakan `const`
+
+Menggunakan const, dapat menetapkan nilai tetap atau *immutable*, memastikan widget tidak membutuhkan rebuild yang tidak diperlukan.
+```dart
+title: const Text('Product berhasil tersimpan'),
+```
+Keuntungan saat menggunakan `const` di dalam widget, flutter tidak akan rebuild widget tersebut ketika `setState()` atau build ulang dijalankan
+
+Waktu untuk menggunakan `const`:
+- Sebaiknya: 
+1. Gunakan `const` untuk Widget Stateless (widget yang tidak perlu berubah, seperti teks atau layout)dan Reusable Widget
+
+- Tidak Disarankan: 
+1. Jangan menggunakan `const` saat suatu widget memiliki nilai yang berubah-ubah selama runtime
+2. Jika widget perlu direbuild sesuai dengan perubahan `setState()` jangan gunakan `const`
+
+
+## Penggunaan Column dan Row pada Flutter. Dan contohnya dari masing-masing layout widget
+
+Dalam flutter, column dan row adalah widget yang digunakan untuk menyusun elemen-elemen dalam tata letak vertikal (untuk colomn) atau horizontal (untuk row). Dan keduanya adalah `flex`
+
+| Fitur                | Column                        | Row                            |
+|----------------------|-------------------------------|--------------------------------|
+| Arah Tata Letak      | Vertikal (atas ke bawah)      | Horizontal (kiri ke kanan)     |
+| Sumbu Utama          | Vertikal                      | Horizontal                     |
+| Sumbu Silang         | Horizontal                    | Vertikal                       |
+| Penggunaan Utama     | Menyusun widget bertingkat    | Menyusun widget berdampingan   |
+| Parameter Utama      | mainAxisAlignment,   crossAxisAlignment         | mainAxisAlignment,   crossAxisAlignment             |            |
+| Keterbatasan         | Membutuhkan ruang vertikal    | Membutuhkan ruang horizontal   |
+
+Contoh `column`
+```dart
+import 'package:flutter/material.dart';
+
+class ColumnExample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Contoh Column')),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Ini adalah teks pertama'),
+          Text('Ini adalah teks kedua'),
+          Icon(Icons.star),
+          ElevatedButton(
+            onPressed: () {},
+            child: Text('Tombol'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+
+Contoh `row`
+```dart
+import 'package:flutter/material.dart';
+
+class RowExample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Contoh Row')),
+      body: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Icon(Icons.home),
+          Text('Beranda'),
+          ElevatedButton(
+            onPressed: () {},
+            child: Text('Klik Saya'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+
+## Elemen-elemen input yang digunakan
+1. **TextFormField**
+= Digunakan untuk input teks pada tiga bidang berbeda:
+- Product: Menyimpan nama produk.
+- Description: Menyimpan deskripsi produk.
+- Amount of Product: Menyimpan jumlah produk.
+
+```dart
+child: TextFormField(
+decoration: InputDecoration(
+  hintText: "Product",
+  labelText: "Product",
+  border: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(5.0),
+  ),
+),
+```
+
+          
+2. **ElevatedButton**
+= Digunakan sebagai tombol Save untuk menyimpan data form. Dan saat tombol ditekan, jika validasi form berhasil, sebuah dialog konfirmasi akan muncul.
+```dart
+child: ElevatedButton(
+style: ButtonStyle(
+  backgroundColor: MaterialStateProperty.all(
+      Theme.of(context).colorScheme.primary),
+),
+onPressed: () {
+  if (_formKey.currentState!.validate()) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Product berhasil tersimpan'),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Product: $_name'),
+                Text('Description: $_description'),
+                Text('Amount of Product: $_amount'),
+              ],
+            ),
+            ...
+
+```
+## Elemen-elemen input yang tidak digunakan
+1. **DropdownButtonFormField**: Untuk memilih dari opsi tertentu.
+2. **Checkbox** atau **Switch**: Untuk memilih antara dua nilai, seperti true atau false.
+3. **RadioButton**: Untuk memilih satu dari beberapa pilihan.
+4. **Slider**: Untuk memilih nilai dalam rentang tertentu.
+5. **DatePicker** atau **TimePicker**: Untuk memilih tanggal atau waktu.
+
+## Cara untuk mengatur tema (theme) dalam aplikasi Flutter agar aplikasi yang dibuat konsisten dan implementasi tema pada aplikasi yang dibuat
+
+Berikut adalah langkah-langkah untuk mengatur tema (theme) secara konsisten:
+
+Pada aplikasi Go Cafe ini, tema sudah diterapkan untuk menjaga konsistensi visual. Tema diatur pada file main.dart dengan menggunakan parameter ThemeData pada MaterialApp, yang mencakup:
+
+1. **Color Scheme**: Menggunakan ColorScheme.fromSwatch untuk membuat skema warna aplikasi. Warna utama (primarySwatch) diset ke warna brown sebagai tema utama, dan secondary warna brown[400].
+   
+2. **Material3**: Pengaturan useMaterial3: true membuat aplikasi mengikuti desain dan elemen gaya terbaru dari Material Design 3, memberikan tampilan modern.
+
+Cara Implementasi Tema dan Penggunaannya di `menu.dart`:
+
+Tema ini diterapkan di seluruh aplikasi, memungkinkan widget seperti `AppBar` dan `ElevatedButton` untuk otomatis mengikuti skema warna yang sudah didefinisikan di ThemeData:
+   - Di AppBar, backgroundColor diambil langsung dari ``Theme.of(context).colorScheme.primary`` untuk memastikan konsistensi warna.
+   - Tombol Save pada form juga mengikuti warna tema utama melalui `Theme.of(context).colorScheme.primary`.
+
+
+Implementasi tema ini memungkinkan widget tertentu mengikuti gaya yang konsisten tanpa mengatur warna secara manual di setiap widget
+
+## Cara menangani navigasi dalam aplikasi dengan banyak halaman pada Flutter?
+
+Berikut adalah cara untuk mengelola navigasi dalam Flutter:
+
+1. Navigator dengan push dan pop
+= `Navigator.push()` digunakan untuk mendorong halaman baru ke atas tumpukan halaman, sedangkan `Navigator.pop()` digunakan untuk menghapus halaman teratas, kembali ke halaman sebelumnya.
+
+
+
+```dart
+ leading: const Icon(Icons.add),
+    title: const Text('Tambah Product'),
+    // Bagian redirection ke MoodEntryFormPage
+    onTap: () {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ProductEntryFormPage(),
+          ));
+    },
+```
+
+ListTile untuk "Tambah Product": Menggunakan `Navigator.push` untuk membuka halaman `ProductEntryFormPage.`
+
+
+```dart
+actions: [
+  TextButton(
+    child: const Text('OK'),
+    onPressed: () {
+      Navigator.pop(context);
+      _formKey.currentState!.reset();
+    },
+  ),
+],
+```
+membuka dialog konfirmasi dan ingin menutupnya setelah pengguna menekan tombol "`OK`", Anda bisa memanggil `Navigator.pop()` di dalam onPressed tombol tersebut.
+
+2. Navigator Push Replacement
+= ListTile untuk "Halaman Utama": Menggunakan `Navigator.pushReplacement` untuk menggantikan halaman saat ini dengan MyHomePage
+
+```dart
+onTap: () {
+  Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MyHomePage(),
+      ));
+},
+```
+
+
 
 
 
