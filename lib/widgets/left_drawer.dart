@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_cafe/screens/list_productentry.dart';
 import 'package:go_cafe/screens/menu.dart';
 import 'package:go_cafe/screens/productentry_form.dart';
 
@@ -54,13 +55,24 @@ class LeftDrawer extends StatelessWidget {
   ListTile(
     leading: const Icon(Icons.add),
     title: const Text('Tambah Product'),
-    // Bagian redirection ke MoodEntryFormPage
+    // Bagian redirection ke ProductEntryFormPage
     onTap: () {
       Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => const ProductEntryFormPage(),
           ));
+    },
+  ),
+  ListTile(
+    leading: const Icon(Icons.add_reaction_rounded),
+    title: const Text('Daftar Product'),
+    onTap: () {
+        // Route menu ke halaman product
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ProductPage()),
+        );
     },
   ),        ],
       ),
